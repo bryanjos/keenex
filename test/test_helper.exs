@@ -17,7 +17,7 @@ defmodule Keenex.Helpers do
   end
 
   def project_id do
-    Application.get_env(:keen, :project_id, "project_id")
+    "project_id" #Application.get_env(:keen, :project_id, "project_id")
   end
 
   def write_key do
