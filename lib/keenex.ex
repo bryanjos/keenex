@@ -1,5 +1,4 @@
 defmodule Keenex do
-  use GenServer
 
   @type status :: :ok | :error
   @type response :: {status, map}
@@ -16,13 +15,13 @@ defmodule Keenex do
   or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
 
   ```
-  {:ok, keen} = Keenex.new
+  {:ok, keen} = Keenex.start_link
   ```
 
   alternatively, you can pass in the variables as well
 
   ```
-  {:ok, keen} = Keenex.new("keen_project_id", "keen_write_key", "keen_read_key") 
+  {:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key") 
   ```
   then pass in the keen pid when calling functions
 
@@ -37,72 +36,60 @@ defmodule Keenex do
   """
 
   @doc """
-  Starts new Keenex config process with the given project_id, write_key, and read_key
+  Starts Keenex process with the given project_id, write_key, and read_key
   """
-  @spec new(binary, binary, binary) :: { Keenex.status, pid }
-  def new(project_id, write_key, read_key) do
+  @spec start_link(binary, binary, binary) :: { Keenex.status, pid }
+  def start_link(project_id, write_key, read_key) do
     start_link(%Config{project_id: project_id, write_key: write_key, read_key: read_key})
   end
 
   @doc """
-  Starts new Keenex config process.
+  Starts start_link Keenex config process.
   
   Looks for application variables in the `:keen` app named `:project_id`, `:write_key`, `:read_key`
   or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
   """
-  @spec new() :: { Keenex.status, pid }
-  def new() do
+  @spec start_link() :: { Keenex.status, pid }
+  def start_link() do
     project_id = Application.get_env(:keen, :project_id, System.get_env("KEEN_PROJECT_ID"))
     write_key =  Application.get_env(:keen, :write_key, System.get_env("KEEN_WRITE_KEY"))
     read_key =  Application.get_env(:keen, :read_key, System.get_env("KEEN_READ_KEY"))
 
-    new(project_id, write_key, read_key)
+    start_link(project_id, write_key, read_key)
   end
 
 
   @spec start_link(Keenex.Config.t) :: { Keenex.status, pid }
   def start_link(config) do
-    GenServer.start_link(__MODULE__, config)
+    Agent.start_link(fn -> config end, name: __MODULE__)
   end
 
   @doc """
   Returns the project id
   """
-  @spec project_id(pid) :: binary
-  def project_id(keen) do
-    config(keen).project_id
+  @spec project_id() :: binary
+  def project_id() do
+    config().project_id
   end
 
   @doc """
   Returns the write key
   """
-  @spec write_key(pid) :: binary
-  def write_key(keen) do
-    config(keen).write_key
+  @spec write_key() :: binary
+  def write_key() do
+    config().write_key
   end
 
   @doc """
   Returns the read key
   """
-  @spec read_key(pid) :: binary
-  def read_key(keen) do
-    config(keen).read_key
+  @spec read_key() :: binary
+  def read_key() do
+    config().read_key
   end
 
-  @doc """
-  Returns the entire config struct
-  """
-  @spec config(pid) :: Keenex.Config.t
-  def config(keen) do
-    GenServer.call(keen, :get_configuration)
+  defp config() do
+    Agent.get(__MODULE__, fn(state) -> state end)
   end
 
-  def init(config) do
-    {:ok, config}
-  end
-
-  @doc false
-  def handle_call(:get_configuration, _from, config) do
-    {:reply, config, config}
-  end
 end

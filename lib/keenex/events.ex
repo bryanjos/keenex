@@ -6,12 +6,12 @@ defmodule Keenex.Events do
 
   
   ```
-  Keenex.Events.post(keen, %{event_collection1: [%{data: "data"}], event_collection2: [%{data: "data"}, %{more_data: "data"}]})
+  Keenex.Events.post(%{event_collection1: [%{data: "data"}], event_collection2: [%{data: "data"}, %{more_data: "data"}]})
   ```
   """
-  @spec post(pid, map) :: Keenex.response
-  def post(keen, events) do
-    project_id = Keenex.project_id(keen)
-    Base.post(keen, :write, "projects/#{project_id}/events", events)
+  @spec post(map) :: Keenex.response
+  def post(events) do
+    project_id = Keenex.project_id()
+    Base.post(:write, "projects/#{project_id}/events", events)
   end
 end

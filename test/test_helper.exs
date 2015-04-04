@@ -9,7 +9,7 @@ defmodule Keenex.Helpers do
   end
 
   def new_keenex do
-    Keenex.new(project_id, write_key, read_key)
+    Keenex.start_link(project_id, write_key, read_key)
   end
 
   def cassette_dir do

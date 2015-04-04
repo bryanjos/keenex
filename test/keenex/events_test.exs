@@ -11,7 +11,7 @@ defmodule Keenex.Events.Test do
 
   test "post events", context do
     use_cassette "events_post" do
-      {status, response} = Keenex.Events.post(context[:keen], %{tacos: [%{test: true}]})
+      {status, response} = Keenex.Events.post(%{tacos: [%{test: true}]})
       assert status == :ok
     end
   end

@@ -2,7 +2,7 @@ Keenex
 ======
 
 ```elixir
-{:keenex, "~> 0.1.0"}
+{:keenex, "~> 0.2.0"}
 ```
 
 [Documentation](http://hexdocs.pm/keenex)
@@ -13,19 +13,19 @@ looks for application variables in the `:keen` app named `:project_id`, `:write_
 or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
 
 ```elixir
-{:ok, keen} = Keenex.new
+{:ok, keen} = Keenex.start_link
 ```
 
 alternatively, you can pass in the variables as well
 
 ```elixir
-{:ok, keen} = Keenex.new("keen_project_id", "keen_write_key", "keen_read_key") 
+{:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key") 
 ```
 
 then pass in the keen pid when calling functions
 
 ```elixir
-{status, response} = Keenex.EventCollections.post(keen, "dinner.tacos", %{test: "tacos"})
+{status, response} = Keenex.EventCollections.post("dinner.tacos", %{test: "tacos"})
 ```
 
 status is either `:ok` or `:error`
