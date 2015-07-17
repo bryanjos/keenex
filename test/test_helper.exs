@@ -17,15 +17,15 @@ defmodule Keenex.Helpers do
   end
 
   def project_id do
-    "project_id" #Application.get_env(:keen, :project_id, "project_id")
+    Application.get_env(:keen, :project_id, System.get_env("KEEN_PROJECT_ID"))
   end
 
   def write_key do
-    Application.get_env(:keen, :write_key, "write_key")
+    Application.get_env(:keen, :write_key, System.get_env("KEEN_WRITE_KEY"))
   end
 
   def read_key do
-    Application.get_env(:keen, :read_key, "read_key")
+    Application.get_env(:keen, :read_key, System.get_env("KEEN_READ_KEY"))
   end
 
 end
