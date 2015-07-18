@@ -3,48 +3,44 @@ defmodule Keenex.Base do
 
   @moduledoc false
 
-  def get(key_type, endpoint, id) do
-    key = get_key(key_type)
-    Http.get("#{endpoint}/#{id}", key)
-    |> to_response
+  def url(endpoint) when is_list(endpoint) do
+    endpoint
+      |> List.wrap
+      |> List.flatten
+      |> Enum.reject(fn(s) -> is_nil(s) or s === "" end)
+      |> Enum.join("/")
+      |> url
   end
 
-  def post(key_type, endpoint, data) do
-    key = get_key(key_type)
-    Http.post(endpoint, key, Poison.encode!(data))
-    |> to_response
+  def url(endpoint) when is_bitstring(endpoint) do
+    "projects/#{Keenex.project_id}/" <> endpoint
   end
 
-  def post(key_type, endpoint) do 
-    post(key_type, endpoint, "")
+  def get(endpoint) do
+    url(endpoint)
+    |> Http.get
   end
 
-  def put(key_type, endpoint, data) do
-    key = get_key(key_type)
-    Http.put(endpoint, key, Poison.encode!(data))
-    |> to_response
+  def post(endpoint, data) do
+    url(endpoint)
+    |> Http.post(Poison.encode!(data))
   end
 
-  def put(key_type, endpoint) do 
-    put(key_type, endpoint, "")
+  def post(endpoint) do
+    post(endpoint, "")
   end
 
-  def delete(key_type, endpoint, id) do
-    key = get_key(key_type)
-    Http.delete("#{endpoint}/#{id}", key)
-    |> to_response
+  def put(endpoint, data) do
+    url(endpoint)
+    |> Http.put(Poison.encode!(data))
   end
 
-  def get_key(key_type) do
-    case key_type do
-      :write ->
-        Keenex.write_key()
-      :read ->
-        Keenex.read_key()
-    end
+  def put(endpoint) do
+    put(endpoint, "")
   end
 
-  def to_response({status, response}) do
-    {status, Poison.decode!(response)}
+  def delete(endpoint) do
+    url(endpoint)
+    |> Http.delete
   end
 end

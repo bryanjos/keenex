@@ -1,31 +1,41 @@
 defmodule Keenex.Http do
+  use HTTPotion.Base
+
   @moduledoc false
-  @contentType  ["Content-Type": "application/json"]
   @url "https://api.keen.io/3.0/"
   @options [timeout: 10000]
 
-  def get(endpoint, key) do
-    headers = Enum.concat(@contentType, [ "Authorization": key ])
-    HTTPotion.get(@url <> endpoint, headers, options: @options) 
+  @headers ["Content-Type": "application/json"]
+
+  def process_url(url) do
+    @url <> url
+  end
+
+  def process_request_headers(custom_headers \\ []) do
+    @headers ++ custom_headers
+  end
+
+  # Add the authorization key based on the request method
+  def auth_headers(method, headers) when method in ~w(put post patch delete options)a do
+    Dict.put(headers, :Authorization, get_key(:write))
+  end
+
+  def auth_headers(_method, headers) do
+    Dict.put(headers, :Authorization, get_key(:read))
+  end
+
+  def request(method, url, body, headers, options) do
+    super(method, url, body, auth_headers(method, headers), options)
     |> handle_response
   end
 
-  def post(endpoint, key, body) do
-    headers = Enum.concat(@contentType, [ "Authorization": key ])
-    HTTPotion.post(@url <> endpoint, body, headers, options: @options) 
-    |> handle_response
-  end
-
-  def put(endpoint, key, body) do
-    headers = Enum.concat(@contentType, [ "Authorization": key ])
-    HTTPotion.put(@url <> endpoint, body, headers, options: @options) 
-    |> handle_response
-  end
-
-  def delete(endpoint, key) do
-    headers = Enum.concat(@contentType, [ "Authorization": key ])
-    HTTPotion.delete(@url <> endpoint, headers, options: @options) 
-    |> handle_response
+  defp get_key(key_type) do
+    case key_type do
+      :write ->
+        Keenex.write_key()
+      :read ->
+        Keenex.read_key()
+    end
   end
 
   defp handle_response(response) do
@@ -33,7 +43,7 @@ defmodule Keenex.Http do
       true ->
         {:ok, response.body}
       false ->
-        {:error, response.body}         
+        {:error, response.body}
     end
   end
 end
