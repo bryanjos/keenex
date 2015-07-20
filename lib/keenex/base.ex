@@ -1,22 +1,15 @@
 defmodule Keenex.Base do
   alias Keenex.Http
+  alias Keenex.URL
 
   @moduledoc false
 
-  def url(endpoint) when is_list(endpoint) do
-    endpoint
-      |> List.wrap
-      |> List.flatten
-      |> Enum.reject(fn(s) -> is_nil(s) or s === "" end)
-      |> Enum.join("/")
-      |> url
+  def url(endpoint, query \\ []) do
+    ["projects", Keenex.project_id, endpoint]
+    |> URL.encode(query)
   end
 
-  def url(endpoint) when is_bitstring(endpoint) do
-    "projects/#{Keenex.project_id}/" <> endpoint
-  end
-
-  def get(endpoint) do
+  def get(endpoint, query) do
     url(endpoint)
     |> Http.get
     |> to_response
