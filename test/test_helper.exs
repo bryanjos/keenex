@@ -1,17 +1,18 @@
 defmodule Keenex.Helpers do
 
   def exvcr_setup do
-    ExVCR.Config.cassette_library_dir(cassette_dir)
-    ExVCR.Config.filter_sensitive_data(project_id, "project_id")
-    ExVCR.Config.filter_sensitive_data(write_key , "write_key" )
-    ExVCR.Config.filter_sensitive_data(read_key  , "read_key"  )
-    ExVCR.Config.filter_sensitive_data(master_key, "master_key")
-    HTTPotion.start
+    if Code.ensure_loaded?(ExVCR) do
+      ExVCR.Config.cassette_library_dir(cassette_dir)
+      ExVCR.Config.filter_sensitive_data(project_id, "project_id")
+      ExVCR.Config.filter_sensitive_data(write_key , "write_key" )
+      ExVCR.Config.filter_sensitive_data(read_key  , "read_key"  )
+      ExVCR.Config.filter_sensitive_data(master_key, "master_key")
+      HTTPotion.start
+    end
   end
 
   def new_keenex do
     Keenex.start_link(project_id, write_key, read_key, master_key)
-    |> IO.inspect
   end
 
   def cassette_dir do
@@ -35,6 +36,5 @@ defmodule Keenex.Helpers do
   end
 
 end
-
 
 ExUnit.start()
