@@ -19,7 +19,7 @@ or if any of those aren't available, it looks for environment variables named `K
 alternatively, you can pass in the variables as well
 
 ```elixir
-{:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key") 
+{:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key", "keen_master_key") 
 ```
 
 then pass in the keen pid when calling functions

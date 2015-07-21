@@ -16,17 +16,28 @@ defmodule Keenex.Http do
   end
 
   # Add the authorization key based on the request method
+  def auth_headers([key: key], headers) do
+    Dict.put(headers, :Authorization, get_key(key))
+  end
+
   def auth_headers(method, headers) when method in ~w(put post patch delete options)a do
-    Dict.put(headers, :Authorization, get_key(:write))
+    auth_headers([key: :write], headers)
   end
 
   def auth_headers(_method, headers) do
-    Dict.put(headers, :Authorization, get_key(:read))
+    auth_headers([key: :read], headers)
   end
 
-  def request(method, url, body, headers, options) do
-    super(method, url, body, auth_headers(method, headers), options)
-    |> handle_response
+  def process_arguments(method, url, options) do
+    args = super(method, url, options)
+    key  = options[:key]
+
+    unless (is_nil(key)) do
+      method = [key: key]
+    end
+
+    headers = auth_headers(method, args[:headers])
+    %{args | :headers => headers}
   end
 
   defp get_key(key_type) do
@@ -35,6 +46,8 @@ defmodule Keenex.Http do
         Keenex.write_key()
       :read ->
         Keenex.read_key()
+      :master ->
+        Keenex.master_key()
     end
   end
 
