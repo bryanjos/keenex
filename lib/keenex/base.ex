@@ -9,8 +9,8 @@ defmodule Keenex.Base do
     |> URL.encode(query)
   end
 
-  def get(endpoint, query) do
-    url(endpoint)
+  def get(endpoint, query \\ []) do
+    url(endpoint, query)
     |> Http.get
     |> to_response
   end
