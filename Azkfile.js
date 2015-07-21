@@ -7,7 +7,7 @@ systems({
     // Dependent systems
     depends: [],
     // More images:  http://images.azk.io
-    image: {"docker": "gullitmiranda/elixir"},
+    image: {"docker": "gullitmiranda/elixir:1.0.4"},
     // Steps to execute before running instances
     provision: [
       "mix do deps.get, compile",
@@ -18,7 +18,8 @@ systems({
       '/azk/#{manifest.dir}'       : sync("."),
       '/azk/#{manifest.dir}/deps'  : persistent("#{system.name}/deps"),
       '/azk/#{manifest.dir}/_build': persistent("#{system.name}/_build"),
-      '/root/.hex'                 : path(env.HOME + '/.hex'),
+      '/root/.hex/hex'             : persistent("#{system.name}/.hex"),
+      '/root/.hex/hex.config'      : path(env.HOME + '/.hex/hex.config'),
     },
     scalable: false,
     http: false,
