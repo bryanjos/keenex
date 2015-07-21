@@ -1,3 +1,8 @@
+erl_crash.dump
+*.ez
+/config
+/docs
+/cover
 .azk
 /_build
 /deps
