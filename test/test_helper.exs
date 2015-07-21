@@ -6,13 +6,12 @@ defmodule Keenex.Helpers do
       ExVCR.Config.filter_sensitive_data(project_id, "project_id")
       ExVCR.Config.filter_sensitive_data(write_key , "write_key" )
       ExVCR.Config.filter_sensitive_data(read_key  , "read_key"  )
-      ExVCR.Config.filter_sensitive_data(master_key, "master_key")
       HTTPotion.start
     end
   end
 
   def new_keenex do
-    Keenex.start_link(project_id, write_key, read_key, master_key)
+    Keenex.start_link(project_id, write_key, read_key)
   end
 
   def cassette_dir do
@@ -29,10 +28,6 @@ defmodule Keenex.Helpers do
 
   def read_key do
     Application.get_env(:keen, :read_key, System.get_env("KEEN_READ_KEY"))
-  end
-
-  def master_key do
-    Application.get_env(:keen, :master_key, System.get_env("KEEN_MASTER_KEY"))
   end
 
 end

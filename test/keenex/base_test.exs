@@ -38,7 +38,7 @@ defmodule Keenex.Base.Test do
     assert url  == "projects/#{Keenex.project_id}/queries/count?event_collection=start"
     assert body == %{filters: filters}
 
-    {status, _response} = Base.post(~w(queries count), params, key: :master)
+    {status, _response} = Base.post(~w(queries count), params, key: :read)
     assert status == :ok
   end
 end

@@ -46,8 +46,6 @@ defmodule Keenex.Http do
         Keenex.write_key()
       :read ->
         Keenex.read_key()
-      :master ->
-        Keenex.master_key()
     end
   end
 
