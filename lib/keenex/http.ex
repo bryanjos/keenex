@@ -52,6 +52,8 @@ defmodule Keenex.Http do
   end
 
   defp handle_response(response) do
+    response = super(response)
+
     case HTTPotion.Response.success?(response) do
       true ->
         {:ok, response.body}

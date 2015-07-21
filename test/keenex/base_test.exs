@@ -21,4 +21,24 @@ defmodule Keenex.Base.Test do
     assert Base.url(~w(queries count), start: :true) == "#{project_url}/queries/count?start=true"
   end
 
+  test "list of endpoint with map in query params" do
+    filters = [%{
+      operator: "eq",
+      property_name: "url",
+      property_value: "https://github.com/azukiapp/feedbin"
+    }]
+
+    params = [
+      event_collection: "start",
+      filters: filters,
+    ]
+
+    {url, body} = Base.request_params(~w(queries count), params)
+
+    assert url  == "projects/#{Keenex.project_id}/queries/count?event_collection=start"
+    assert body == %{filters: filters}
+
+    {status, _response} = Base.post(~w(queries count), params, key: :master)
+    assert status == :ok
+  end
 end
