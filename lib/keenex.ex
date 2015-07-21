@@ -38,7 +38,7 @@ defmodule Keenex do
   @doc """
   Starts Keenex process with the given project_id, write_key, and read_key
   """
-  @spec start_link(binary, binary, binary, binary) :: { Keenex.status, pid }
+  @spec start_link(binary, binary, binary) :: { Keenex.status, pid }
   def start_link(project_id, write_key, read_key) do
     %Config{project_id: project_id, write_key: write_key, read_key: read_key}
     |> start_link
