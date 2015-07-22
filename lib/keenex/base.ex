@@ -7,7 +7,7 @@ defmodule Keenex.Base do
   def get(endpoint, query \\ []) do
     {url, _body} = request_params(endpoint, query)
 
-    Http.post(url)
+    Http.get(url)
     |> to_response
   end
 
