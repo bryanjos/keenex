@@ -1,6 +1,7 @@
 defmodule Keenex.EventCollections.Test do
   use ExUnit.Case, async: false
-  use ExVCR.Mock
+
+  # use ExVCR.Mock
   alias Keenex.Helpers
 
   setup_all do
@@ -9,10 +10,10 @@ defmodule Keenex.EventCollections.Test do
     {:ok, [keen: keen] }
   end
 
-  test "post to event collection", context do
-    use_cassette "event_collections_post" do
-      {status, response} = Keenex.EventCollections.post("dinner.tacos", %{test: "tacos"})
-      assert status == :ok
-    end
-  end
+  # test "post to event collection", context do
+  #   use_cassette "event_collections_post" do
+  #     {status, response} = Keenex.EventCollections.post("dinner.tacos", %{test: "tacos"})
+  #     assert status == :ok
+  #   end
+  # end
 end

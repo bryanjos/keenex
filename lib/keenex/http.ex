@@ -1,39 +1,62 @@
 defmodule Keenex.Http do
+  use HTTPotion.Base
+
   @moduledoc false
-  @contentType  ["Content-Type": "application/json"]
   @url "https://api.keen.io/3.0/"
   @options [timeout: 10000]
 
-  def get(endpoint, key) do
-    headers = Enum.concat(@contentType, [ "Authorization": key ])
-    HTTPotion.get(@url <> endpoint, headers, options: @options) 
-    |> handle_response
+  @headers ["Content-Type": "application/json"]
+
+  def process_url(url) do
+    @url <> url
   end
 
-  def post(endpoint, key, body) do
-    headers = Enum.concat(@contentType, [ "Authorization": key ])
-    HTTPotion.post(@url <> endpoint, body, headers, options: @options) 
-    |> handle_response
+  def process_request_headers(custom_headers \\ []) do
+    @headers ++ custom_headers
   end
 
-  def put(endpoint, key, body) do
-    headers = Enum.concat(@contentType, [ "Authorization": key ])
-    HTTPotion.put(@url <> endpoint, body, headers, options: @options) 
-    |> handle_response
+  # Add the authorization key based on the request method
+  def auth_headers([key: key], headers) do
+    Dict.put(headers, :Authorization, get_key(key))
   end
 
-  def delete(endpoint, key) do
-    headers = Enum.concat(@contentType, [ "Authorization": key ])
-    HTTPotion.delete(@url <> endpoint, headers, options: @options) 
-    |> handle_response
+  def auth_headers(method, headers) when method in ~w(put post patch delete options)a do
+    auth_headers([key: :write], headers)
+  end
+
+  def auth_headers(_method, headers) do
+    auth_headers([key: :read], headers)
+  end
+
+  def process_arguments(method, url, options) do
+    args = super(method, url, options)
+    key  = options[:key]
+
+    unless (is_nil(key)) do
+      method = [key: key]
+    end
+
+    headers = auth_headers(method, args[:headers])
+    %{args | :headers => headers}
+  end
+
+  defp get_key(key_type) do
+    case key_type do
+      :write ->
+        Keenex.write_key()
+      :read ->
+        Keenex.read_key()
+    end
   end
 
   defp handle_response(response) do
+    response = super(response)
+
     case HTTPotion.Response.success?(response) do
       true ->
         {:ok, response.body}
       false ->
-        {:error, response.body}         
+        {:error, response.body}
     end
   end
 end

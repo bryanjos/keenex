@@ -33,3 +33,31 @@ status is either `:ok` or `:error`
 response is a Map converted from the json response from Keen.
 
 For info about the content of the results, check out the [Keen API reference](https://keen.io/docs/api/reference/)
+
+
+# Contributing
+
+### Requirements
+
+- Install [azk][azk-install]
+
+[azk-install]: http://docs.azk.io/en/installation/
+
+### Install/Update dependencies
+
+Run all test:
+
+```shell
+$ azk shell -- mix do deps.get, compile
+```
+
+### Test
+
+- Run all test:
+
+```shell
+$ azk shell -- mix test
+# or
+$ azk shell
+mix test
+```

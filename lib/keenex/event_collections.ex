@@ -10,7 +10,6 @@ defmodule Keenex.EventCollections do
   """
   @spec post(binary, map) :: Keenex.response
   def post(event_collection, data) do
-    project_id = Keenex.project_id()
-    Base.post(:write, "projects/#{project_id}/events/#{event_collection}", data)
+    Base.post(["events", event_collection], data)
   end
 end

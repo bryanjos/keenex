@@ -21,7 +21,7 @@ defmodule Keenex do
   alternatively, you can pass in the variables as well
 
   ```
-  {:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key") 
+  {:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key")
   ```
   then pass in the keen pid when calling functions
 
@@ -40,20 +40,21 @@ defmodule Keenex do
   """
   @spec start_link(binary, binary, binary) :: { Keenex.status, pid }
   def start_link(project_id, write_key, read_key) do
-    start_link(%Config{project_id: project_id, write_key: write_key, read_key: read_key})
+    %Config{project_id: project_id, write_key: write_key, read_key: read_key}
+    |> start_link
   end
 
   @doc """
   Starts start_link Keenex config process.
-  
+
   Looks for application variables in the `:keen` app named `:project_id`, `:write_key`, `:read_key`
   or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
   """
   @spec start_link() :: { Keenex.status, pid }
   def start_link() do
     project_id = Application.get_env(:keen, :project_id, System.get_env("KEEN_PROJECT_ID"))
-    write_key =  Application.get_env(:keen, :write_key, System.get_env("KEEN_WRITE_KEY"))
-    read_key =  Application.get_env(:keen, :read_key, System.get_env("KEEN_READ_KEY"))
+    write_key  = Application.get_env(:keen, :write_key , System.get_env("KEEN_WRITE_KEY" ))
+    read_key   = Application.get_env(:keen, :read_key  , System.get_env("KEEN_READ_KEY"  ))
 
     start_link(project_id, write_key, read_key)
   end
