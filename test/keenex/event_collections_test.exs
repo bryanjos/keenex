@@ -10,10 +10,16 @@ defmodule Keenex.EventCollections.Test do
     {:ok, [keen: keen] }
   end
 
-  # test "post to event collection", context do
-  #   use_cassette "event_collections_post" do
-  #     {status, response} = Keenex.EventCollections.post("dinner.tacos", %{test: "tacos"})
-  #     assert status == :ok
-  #   end
-  # end
+  test "post new start event" do
+    user_cassette "event collection multiple data", context do
+      data = %{
+        url:           "https://github.com/azukiapp/azk",
+        host:          "github.com",
+        repo_user:     "azukiapp",
+        repo_basename: "azk"
+      }
+      {status, _} = Keenex.EventCollections.post("start", data)
+      assert status == :ok
+    end
+  end
 end

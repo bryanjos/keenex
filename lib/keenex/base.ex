@@ -12,7 +12,7 @@ defmodule Keenex.Base do
   end
 
   def post(endpoint, body, options \\ []) do
-    {url, body} = request_params(endpoint, body)
+    {url, _} = request_params(endpoint)
     Http.post(url, options |> Dict.put(:body, Poison.encode!(body)))
     |> to_response
   end
@@ -23,7 +23,7 @@ defmodule Keenex.Base do
   end
 
   def put(endpoint, body, options \\ []) do
-    {url, body} = request_params(endpoint, body)
+    {url, _} = request_params(endpoint)
     Http.put(url, options |> Dict.put(:body, Poison.encode!(body)))
     |> to_response
   end
