@@ -49,6 +49,11 @@ defmodule Keenex.Http do
     end
   end
 
+  @doc """
+  Process body to json after send request
+  """
+  def process_request_body(body) when body == "", do: ""
+
   def process_request_body(body) do
     Enum.into(body, %{})
     |> Poison.encode!

@@ -3,7 +3,12 @@ defmodule Keenex.Http.Test do
 
   alias Keenex.Http
 
-  test "convert body from list to map" do
+  test "process empty request body " do
+    body = Http.process_request_body("")
+    assert body == ""
+  end
+
+  test "process list request body" do
     params =
       [
         filters: [%{
