@@ -14,31 +14,25 @@ defmodule Keenex.Base.Test do
   end
 
   test "should url with project_id from bitstring" do
-    assert Base.url("queries/count") == "#{project_url}/queries/count"
+    assert Base.url_encode("queries/count") == "#{project_url}/queries/count"
   end
 
   test "should url with project_id and query params" do
-    assert Base.url(~w(queries count), start: :true) == "#{project_url}/queries/count?start=true"
+    assert Base.url_encode(~w(queries count), start: :true) == "#{project_url}/queries/count?start=true"
   end
 
   test "list of endpoint with map in query params" do
-    filters = [%{
-      operator: "eq",
-      property_name: "url",
-      property_value: "https://github.com/azukiapp/feedbin"
-    }]
+    endpoint = [~w(queries count), event_collection: "start",]
+    params   =
+      [
+        filters: [%{
+          operator: "eq",
+          property_name: "url",
+          property_value: "https://github.com/azukiapp/feedbin"
+        }]
+      ]
 
-    params = [
-      event_collection: "start",
-      filters: filters,
-    ]
-
-    {url, body} = Base.request_params(~w(queries count), params)
-
-    assert url  == "projects/#{Keenex.project_id}/queries/count?event_collection=start"
-    assert body == %{filters: filters}
-
-    {status, _response} = Base.post(~w(queries count), params, key: :read)
+    {status, _response} = Base.post(endpoint, params, key: :read)
     assert status == :ok
   end
 end
