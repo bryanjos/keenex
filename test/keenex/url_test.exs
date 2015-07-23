@@ -50,4 +50,11 @@ defmodule Keenex.URL.Test do
 
     assert url == "queries/count?event=start&key=value"
   end
+
+  test "encode url with map in endpoint" do
+    url_base = ["queries/extraction", %{event_collection: "start"}]
+    url = URL.encode(url_base, [])
+
+    assert url == "queries/extraction?event_collection=start"
+  end
 end

@@ -50,6 +50,10 @@ defmodule Keenex.URL do
     Dict.put(acc, k, v)
   end
 
+  def parse_query(query, acc) when is_map(query) do
+    Dict.merge(acc, query)
+  end
+
   def parse_query(query, acc) when is_bitstring(query), do: acc
 
   def parse_query([], acc), do: acc
