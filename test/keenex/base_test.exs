@@ -35,4 +35,13 @@ defmodule Keenex.Base.Test do
     {status, _response} = Base.post(endpoint, params, key: :read)
     assert status == :ok
   end
+
+  @tag external: :get
+  test "get extraction" do
+    url_base = ["queries/extraction", %{event_collection: "start"}]
+    {status, _response} = Base.get(url_base, [])
+    |> IO.inspect
+
+    assert status == :ok
+  end
 end
