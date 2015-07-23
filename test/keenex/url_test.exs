@@ -36,4 +36,18 @@ defmodule Keenex.URL.Test do
     url = URL.encode(~w(queries count), key: "value")
     assert url == "queries/count?key=value"
   end
+
+  test "list of endpoint included query params" do
+    url_base = [~w(queries count), key: "value", event: :start]
+    url = URL.encode(url_base)
+
+    assert url == "queries/count?event=start&key=value"
+  end
+
+  test "list of endpoint included query params and list in second argument" do
+    url_base = [~w(queries count), key: "value", event: :start]
+    url = URL.encode(url_base, filters: [ignored: true])
+
+    assert url == "queries/count?event=start&key=value"
+  end
 end
