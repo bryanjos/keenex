@@ -49,6 +49,11 @@ defmodule Keenex.Http do
     end
   end
 
+  def process_request_body(body) do
+    Enum.into(body, %{})
+    |> Poison.encode!
+  end
+
   defp handle_response(response) do
     response = super(response)
 
