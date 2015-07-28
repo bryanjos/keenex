@@ -1,7 +1,7 @@
 defmodule Keenex.EventCollections.Test do
   use ExUnit.Case, async: false
+  use ExVCR.Mock
 
-  # use ExVCR.Mock
   alias Keenex.Helpers
 
   setup_all do
@@ -11,7 +11,7 @@ defmodule Keenex.EventCollections.Test do
   end
 
   test "post new start event" do
-    user_cassette "event collection multiple data", context do
+    use_cassette "event collection multiple data" do
       data = %{
         url:           "https://github.com/azukiapp/azk",
         host:          "github.com",

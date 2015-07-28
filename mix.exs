@@ -21,9 +21,9 @@ defmodule Keenex.Mixfile do
   defp deps do
     [
       {:ibrowse, github: "cmullaparthi/ibrowse"},
-      {:httpotion, "~> 2.1.0"},
+      {:httpotion, "~> 2.1.0", override: true},
       {:poison, "~> 1.3.1"},
-      # {:exvcr, "~> 0.4.0", only: :test},
+      {:exvcr, "~> 0.4.0", only: :test, github: "gullitmiranda/exvcr"},
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc, "~> 0.6", only: :dev},
       {:dialyze, "~> 0.1.3", only: :dev}

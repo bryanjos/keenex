@@ -1,10 +1,12 @@
 defmodule Keenex.Base.Test do
   use ExUnit.Case, async: false
+  use ExVCR.Mock
 
   alias Keenex.Helpers
   alias Keenex.Base
 
   setup_all do
+    Helpers.exvcr_setup
     {:ok, keen } = Helpers.new_keenex
     {:ok, [keen: keen] }
   end
@@ -22,26 +24,29 @@ defmodule Keenex.Base.Test do
   end
 
   test "list of endpoint with map in query params" do
-    endpoint = [~w(queries count), event_collection: "start",]
-    params   =
-      [
-        filters: [%{
-          operator: "eq",
-          property_name: "url",
-          property_value: "https://github.com/azukiapp/feedbin"
-        }]
-      ]
+    use_cassette "query count start" do
+      endpoint = [~w(queries count), event_collection: "start",]
+      params   =
+        [
+          filters: [%{
+            operator: "eq",
+            property_name: "url",
+            property_value: "https://github.com/azukiapp/feedbin"
+          }]
+        ]
 
-    {status, _response} = Base.post(endpoint, params, key: :read)
-    assert status == :ok
+      {status, _response} = Base.post(endpoint, params, key: :read)
+      assert status == :ok
+    end
   end
 
   @tag external: :get
   test "get extraction" do
-    url_base = ["queries/extraction", %{event_collection: "start"}]
-    {status, _response} = Base.get(url_base, [])
-    |> IO.inspect
+    use_cassette "queries extraction start" do
+      url_base = ["queries/extraction", %{event_collection: "start"}]
+      {status, _response} = Base.get(url_base, [])
 
-    assert status == :ok
+      assert status == :ok
+    end
   end
 end
