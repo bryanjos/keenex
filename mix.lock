@@ -3,7 +3,7 @@
   "ex_doc": {:hex, :ex_doc, "0.7.3"},
   "exactor": {:hex, :exactor, "2.1.2"},
   "exjsx": {:hex, :exjsx, "3.2.0"},
-  "exvcr": {:git, "git://github.com/gullitmiranda/exvcr.git", "cf5585cbc58beacfed65aa54e724e54e96bf22e2", []},
+  "exvcr": {:git, "git://github.com/gullitmiranda/exvcr.git", "38049a0f22e10bbc2217c3c13bd47b84dd778ff3", []},
   "hackney": {:hex, :hackney, "1.3.0"},
   "httpoison": {:hex, :httpoison, "0.7.1"},
   "httpotion": {:hex, :httpotion, "2.1.0"},
