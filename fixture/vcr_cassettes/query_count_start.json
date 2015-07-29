@@ -1,22 +1,22 @@
 [
   {
     "request": {
-      "body": "{\"tacos\":[{\"test\":true}]}",
+      "body": "{\"filters\":[{\"property_value\":\"https://github.com/azukiapp/feedbin\",\"property_name\":\"url\",\"operator\":\"eq\"}]}",
       "headers": {
-        "Content-Type": "application/json",
-        "Authorization": "write_key"
+        "Authorization": "read_key",
+        "Content-Type": "application/json"
       },
       "method": "post",
       "options": [],
-      "url": "https://api.keen.io/3.0/projects/project_id/events"
+      "url": "https://api.keen.io/3.0/projects/project_id/queries/count?event_collection=start"
     },
     "response": {
-      "body": "{\"tacos\": [{\"success\": true}]}",
+      "body": "{\"result\": 6}",
       "headers": {
         "Server": "nginx",
-        "Date": "Sun, 07 Dec 2014 15:18:22 GMT",
+        "Date": "Tue, 28 Jul 2015 23:47:50 GMT",
         "Content-Type": "application/json",
-        "Content-Length": "30",
+        "Content-Length": "13",
         "Connection": "close",
         "Expires": "Sat, 01 Jan 2000 01:01:01 GMT",
         "Vary": "Accept-Encoding",

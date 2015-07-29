@@ -1,20 +1,20 @@
 [
   {
     "request": {
-      "body": "{\"test\":\"tacos\"}",
+      "body": "{\"url\":\"https://github.com/azukiapp/azk\",\"repo_user\":\"azukiapp\",\"repo_basename\":\"azk\",\"host\":\"github.com\"}",
       "headers": {
-        "Content-Type": "application/json",
-        "Authorization": "write_key"
+        "Authorization": "write_key",
+        "Content-Type": "application/json"
       },
       "method": "post",
       "options": [],
-      "url": "https://api.keen.io/3.0/projects/project_id/events/dinner.tacos"
+      "url": "https://api.keen.io/3.0/projects/project_id/events/start"
     },
     "response": {
       "body": "{\"created\": true}",
       "headers": {
         "Server": "nginx",
-        "Date": "Sun, 07 Dec 2014 16:24:13 GMT",
+        "Date": "Tue, 28 Jul 2015 23:47:52 GMT",
         "Content-Type": "application/json",
         "Content-Length": "17",
         "Connection": "close",

@@ -1,0 +1,32 @@
+[
+  {
+    "request": {
+      "body": "{\"tacos\":[{\"test\":true}]}",
+      "headers": {
+        "Authorization": "write_key",
+        "Content-Type": "application/json"
+      },
+      "method": "post",
+      "options": [],
+      "url": "https://api.keen.io/3.0/projects/project_id/events"
+    },
+    "response": {
+      "body": "{\"tacos\": [{\"success\": true}]}",
+      "headers": {
+        "Server": "nginx",
+        "Date": "Tue, 28 Jul 2015 23:47:48 GMT",
+        "Content-Type": "application/json",
+        "Content-Length": "30",
+        "Connection": "close",
+        "Expires": "Sat, 01 Jan 2000 01:01:01 GMT",
+        "Vary": "Accept-Encoding",
+        "Pragma": "no-cache",
+        "Cache-Control": "private, no-cache, no-cache=Set-Cookie, max-age=0, s-maxage=0",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "origin, content-type, accept, authorization, user-agent"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

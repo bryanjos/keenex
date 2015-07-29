@@ -1,7 +1,7 @@
 defmodule Keenex.EventCollections.Test do
   use ExUnit.Case, async: false
+  use ExVCR.Mock
 
-  # use ExVCR.Mock
   alias Keenex.Helpers
 
   setup_all do
@@ -10,10 +10,16 @@ defmodule Keenex.EventCollections.Test do
     {:ok, [keen: keen] }
   end
 
-  # test "post to event collection", context do
-  #   use_cassette "event_collections_post" do
-  #     {status, response} = Keenex.EventCollections.post("dinner.tacos", %{test: "tacos"})
-  #     assert status == :ok
-  #   end
-  # end
+  test "post new start event" do
+    use_cassette "event collection multiple data" do
+      data = %{
+        url:           "https://github.com/azukiapp/azk",
+        host:          "github.com",
+        repo_user:     "azukiapp",
+        repo_basename: "azk"
+      }
+      {status, _} = Keenex.EventCollections.post("start", data)
+      assert status == :ok
+    end
+  end
 end

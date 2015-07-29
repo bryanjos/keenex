@@ -1,4 +1,4 @@
-defmodule Keenex.Http do
+defmodule Keenex.HTTP do
   use HTTPotion.Base
 
   @moduledoc false
@@ -47,6 +47,16 @@ defmodule Keenex.Http do
       :read ->
         Keenex.read_key()
     end
+  end
+
+  @doc """
+  Process body to json after send request
+  """
+  def process_request_body(body) when body == "", do: ""
+
+  def process_request_body(body) do
+    Enum.into(body, %{})
+    |> Poison.encode!
   end
 
   defp handle_response(response) do
