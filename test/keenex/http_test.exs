@@ -1,10 +1,10 @@
-defmodule Keenex.Http.Test do
+defmodule Keenex.HTTP.Test do
   use ExUnit.Case, async: false
 
-  alias Keenex.Http
+  alias Keenex.HTTP
 
   test "process empty request body " do
-    body = Http.process_request_body("")
+    body = HTTP.process_request_body("")
     assert body == ""
   end
 
@@ -18,7 +18,7 @@ defmodule Keenex.Http.Test do
         }]
       ]
 
-    body = Http.process_request_body(params)
+    body = HTTP.process_request_body(params)
     should =
       Enum.into(params, %{})
       |> Poison.encode!

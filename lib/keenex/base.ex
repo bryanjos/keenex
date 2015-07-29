@@ -1,12 +1,12 @@
 defmodule Keenex.Base do
-  alias Keenex.Http
+  alias Keenex.HTTP
   alias Keenex.URL
 
   @moduledoc false
 
   def get(endpoint, query \\ []) do
     url_encode(endpoint, query)
-    |> Http.get
+    |> HTTP.get
     |> to_response
   end
 
@@ -14,7 +14,7 @@ defmodule Keenex.Base do
     options = Dict.put(options, :body, body)
 
     url_encode(endpoint)
-    |> Http.post(options)
+    |> HTTP.post(options)
     |> to_response
   end
 
@@ -26,7 +26,7 @@ defmodule Keenex.Base do
     options = Dict.put(options, :body, body)
 
     url_encode(endpoint)
-    |> Http.put(options)
+    |> HTTP.put(options)
     |> to_response
   end
 
@@ -36,7 +36,7 @@ defmodule Keenex.Base do
 
   def delete(endpoint, query \\ []) do
     url_encode(endpoint, query)
-    |> Http.delete
+    |> HTTP.delete
     |> to_response
   end
 

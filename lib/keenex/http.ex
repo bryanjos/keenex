@@ -1,4 +1,4 @@
-defmodule Keenex.Http do
+defmodule Keenex.HTTP do
   use HTTPotion.Base
 
   @moduledoc false
