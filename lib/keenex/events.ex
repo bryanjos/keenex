@@ -1,8 +1,21 @@
 defmodule Keenex.Events do
-  alias Keenex.Base
+  alias Keenex.HTTP
 
   @doc """
-  Inserts multiple events into one or more event collections
+  Return schema information for all the event collections in a given project, along with properties (and their types), and links to sub-resources.
+
+
+  ```
+  Keenex.Events.get()
+  ```
+  """
+  @spec get() :: Keenex.response
+  def get() do
+    HTTP.get("/projects/#{Keenex.project_id}/events")
+  end
+
+  @doc """
+  Record multiple events to one or more event collections with a single request.
 
 
   ```
@@ -11,6 +24,6 @@ defmodule Keenex.Events do
   """
   @spec post(map) :: Keenex.response
   def post(events) do
-    Base.post("events", events)
+    HTTP.post("/projects/#{Keenex.project_id}/events", events)
   end
 end

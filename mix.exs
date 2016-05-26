@@ -3,11 +3,13 @@ defmodule Keenex.Mixfile do
 
   def project do
     [app: :keenex,
-     version: "0.2.0",
+     version: "0.3.0-dev",
      elixir: "~> 1.0",
      deps: deps,
      description: "Keen.io API Client",
      package: package,
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: [coveralls: :test],
      source_url: "https://github.com/bryanjos/keenex" ]
   end
 
@@ -15,25 +17,25 @@ defmodule Keenex.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [applications: [:httpotion, :logger, :poison]]
+    [applications: [:httpoison, :logger, :poison]]
   end
 
   defp deps do
     [
-      {:ibrowse, github: "cmullaparthi/ibrowse"},
-      {:httpotion, "~> 2.1.0", override: true},
-      {:poison, "~> 1.3.1"},
-      {:exvcr, "~> 0.4.0", only: :test, github: "gullitmiranda/exvcr"},
-      {:earmark, "~> 0.1", only: :dev},
-      {:ex_doc, "~> 0.6", only: :dev},
-      {:dialyze, "~> 0.1.3", only: :dev}
+      {:httpoison, "~> 0.8"},
+      {:poison, "~> 1.0 or ~> 2.0"},
+      {:earmark, "~> 0.2", only: :dev},
+      {:ex_doc, "~> 0.11", only: :dev},
+      {:exvcr, "~> 0.7", only: [:dev, :test]},
+      {:excoveralls, "~> 0.4", only: [:dev, :test]},
+      {:credo, "~> 0.2.0", only: [:dev, :test]}
     ]
   end
 
   defp package do
     [ # These are the default files included in the package
       files: ["lib", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
-      contributors: ["Bryan Joseph"],
+      maintainers: ["Bryan Joseph"],
       licenses: ["MIT"],
       links: %{ "GitHub" => "https://github.com/bryanjos/keenex" }
     ]

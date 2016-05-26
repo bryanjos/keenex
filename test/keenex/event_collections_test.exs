@@ -1,6 +1,6 @@
 defmodule Keenex.EventCollections.Test do
   use ExUnit.Case, async: false
-  use ExVCR.Mock
+  use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
   alias Keenex.Helpers
 

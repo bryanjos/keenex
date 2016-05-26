@@ -19,7 +19,7 @@ or if any of those aren't available, it looks for environment variables named `K
 alternatively, you can pass in the variables as well
 
 ```elixir
-{:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key") 
+{:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key")
 ```
 
 then pass in the keen pid when calling functions
@@ -33,31 +33,3 @@ status is either `:ok` or `:error`
 response is a Map converted from the json response from Keen.
 
 For info about the content of the results, check out the [Keen API reference](https://keen.io/docs/api/reference/)
-
-
-# Contributing
-
-### Requirements
-
-- Install [azk][azk-install]
-
-[azk-install]: http://docs.azk.io/en/installation/
-
-### Install/Update dependencies
-
-Run all test:
-
-```shell
-$ azk shell -- mix do deps.get, compile
-```
-
-### Test
-
-- Run all test:
-
-```shell
-$ azk shell -- mix test
-# or
-$ azk shell
-mix test
-```

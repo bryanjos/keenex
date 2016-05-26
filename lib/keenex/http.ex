@@ -1,43 +1,34 @@
 defmodule Keenex.HTTP do
-  use HTTPotion.Base
 
   @moduledoc false
-  @url "https://api.keen.io/3.0/"
-  @options [timeout: 10000]
+  @url "https://api.keen.io/3.0"
 
   @headers ["Content-Type": "application/json"]
 
-  def process_url(url) do
-    @url <> url
+
+  def get(endpoint) do
+    headers = [{"Authorization", get_key(:read)}]
+    HTTPoison.get(@url <> endpoint, Keyword.merge(@headers, headers))
+    |> handle_response
   end
 
-  def process_request_headers(custom_headers \\ []) do
-    @headers ++ custom_headers
+  def post(endpoint, data, key_type \\ :write) do
+    headers = [{"Authorization", get_key(key_type)}]
+    HTTPoison.post(@url <> endpoint, Poison.encode!(data), Keyword.merge(@headers, headers))
+    |> handle_response
   end
 
-  # Add the authorization key based on the request method
-  def auth_headers([key: key], headers) do
-    Dict.put(headers, :Authorization, get_key(key))
-  end
+  defp handle_response(response) do
+    case response do
+      {:ok, %HTTPoison.Response{status_code: status_code} = response } when status_code in 200..299 ->
+        {:ok, Poison.decode!(response.body) }
 
-  def auth_headers(method, headers) when method in ~w(put post patch delete options)a do
-    auth_headers([key: :write], headers)
-  end
+      {:ok, %HTTPoison.Response{status_code: status_code} = response } when status_code in 400..599 ->
+        {:error, Poison.decode!(response.body) }
 
-  def auth_headers(_method, headers) do
-    auth_headers([key: :read], headers)
-  end
-
-  def process_arguments(method, url, options) do
-    args = super(method, url, options)
-    key  = options[:key]
-
-    unless (is_nil(key)) do
-      method = [key: key]
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        {:error, %{ reason: reason } }
     end
-
-    headers = auth_headers(method, args[:headers])
-    %{args | :headers => headers}
   end
 
   defp get_key(key_type) do
@@ -46,27 +37,6 @@ defmodule Keenex.HTTP do
         Keenex.write_key()
       :read ->
         Keenex.read_key()
-    end
-  end
-
-  @doc """
-  Process body to json after send request
-  """
-  def process_request_body(body) when body == "", do: ""
-
-  def process_request_body(body) do
-    Enum.into(body, %{})
-    |> Poison.encode!
-  end
-
-  defp handle_response(response) do
-    response = super(response)
-
-    case HTTPotion.Response.success?(response) do
-      true ->
-        {:ok, response.body}
-      false ->
-        {:error, response.body}
     end
   end
 end

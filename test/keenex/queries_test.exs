@@ -1,4 +1,4 @@
-defmodule Keenex.Events.Test do
+defmodule Keenex.Queries.Test do
   use ExUnit.Case, async: false
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
@@ -8,12 +8,5 @@ defmodule Keenex.Events.Test do
     Helpers.exvcr_setup
     {:ok, keen } = Helpers.new_keenex
     {:ok, [keen: keen] }
-  end
-
-  test "post events" do
-    use_cassette "events_post" do
-      {status, _response} = Keenex.Events.post(%{tacos: [%{test: true}]})
-      assert status == :ok
-    end
   end
 end

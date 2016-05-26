@@ -6,7 +6,7 @@ defmodule Keenex.Helpers do
     ExVCR.Config.filter_sensitive_data(read_key  , "read_key"  )
     ExVCR.Config.filter_sensitive_data(project_id, "project_id")
 
-    HTTPotion.start
+    HTTPoison.start
   end
 
   def new_keenex do
