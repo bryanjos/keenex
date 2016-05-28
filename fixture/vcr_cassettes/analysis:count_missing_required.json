@@ -1,32 +1,29 @@
 [
   {
     "request": {
-      "body": "{\"tacos\":[{\"test\":true}]}",
+      "body": "{}",
       "headers": {
         "Content-Type": "application/json",
-        "Authorization": "write_key"
+        "Authorization": "read_key"
       },
       "method": "post",
       "options": [],
       "request_body": "",
-      "url": "https://api.keen.io/3.0/projects/project_id/events"
+      "url": "https://api.keen.io/3.0/projects/project_id/queries/count"
     },
     "response": {
-      "body": "{\"tacos\": [{\"success\": true}]}",
+      "body": "{\"message\": \"Your request is missing a required field. Field: 'event_collection'.\", \"error_code\": \"MissingRequiredRequestFieldError\"}",
       "headers": {
         "Server": "nginx",
-        "Date": "Sat, 28 May 2016 17:36:47 GMT",
+        "Date": "Sat, 28 May 2016 17:36:45 GMT",
         "Content-Type": "application/json",
-        "Content-Length": "30",
+        "Content-Length": "133",
         "Connection": "close",
-        "Expires": "Sat, 01 Jan 2000 01:01:01 GMT",
         "Vary": "Accept-Encoding",
-        "Pragma": "no-cache",
-        "Cache-Control": "private, no-cache, no-cache=Set-Cookie, max-age=0, s-maxage=0",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "origin, content-type, accept, authorization, user-agent"
       },
-      "status_code": 200,
+      "status_code": 400,
       "type": "ok"
     }
   }

@@ -1,23 +1,23 @@
 [
   {
     "request": {
-      "body": "{\"url\":\"https://github.com/azukiapp/azk\",\"repo_user\":\"azukiapp\",\"repo_basename\":\"azk\",\"host\":\"github.com\"}",
+      "body": "{\"timeframe\":\"this_7_days\",\"target_property\":\"host\",\"event_collection\":\"start\"}",
       "headers": {
         "Content-Type": "application/json",
-        "Authorization": "write_key"
+        "Authorization": "read_key"
       },
       "method": "post",
       "options": [],
       "request_body": "",
-      "url": "https://api.keen.io/3.0/projects/project_id/events/start"
+      "url": "https://api.keen.io/3.0/projects/project_id/queries/median"
     },
     "response": {
-      "body": "{\"created\": true}",
+      "body": "{\"result\": null}",
       "headers": {
         "Server": "nginx",
-        "Date": "Sat, 28 May 2016 17:36:48 GMT",
+        "Date": "Sat, 28 May 2016 17:36:42 GMT",
         "Content-Type": "application/json",
-        "Content-Length": "17",
+        "Content-Length": "16",
         "Connection": "close",
         "Expires": "Sat, 01 Jan 2000 01:01:01 GMT",
         "Vary": "Accept-Encoding",
@@ -26,7 +26,7 @@
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "origin, content-type, accept, authorization, user-agent"
       },
-      "status_code": 201,
+      "status_code": 200,
       "type": "ok"
     }
   }

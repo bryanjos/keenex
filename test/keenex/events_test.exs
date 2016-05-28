@@ -16,4 +16,11 @@ defmodule Keenex.Events.Test do
       assert status == :ok
     end
   end
+
+  test "get event collection schemas" do
+    use_cassette "event collection get schemas" do
+      {status, _} = Keenex.Events.get()
+      assert status == :ok
+    end
+  end
 end

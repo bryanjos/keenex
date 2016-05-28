@@ -1,4 +1,6 @@
 defmodule Keenex.Queries do
+  alias Keenex.HTTP
+
   def count(data) do
     query("count", data)
   end
@@ -15,12 +17,20 @@ defmodule Keenex.Queries do
     query("maximum", data)
   end
 
+  def sum(data) do
+    query("sum", data)
+  end
+
   def average(data) do
     query("average", data)
   end
 
   def median(data) do
     query("median", data)
+  end
+
+  def percentile(data) do
+    query("percentile", data)
   end
 
   def select_unique(data) do
