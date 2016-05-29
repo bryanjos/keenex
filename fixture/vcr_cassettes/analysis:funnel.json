@@ -15,7 +15,7 @@
       "body": "{\"steps\": [{\"with_actors\": false, \"actor_property\": \"host\", \"filters\": [], \"timeframe\": \"this_7_days\", \"timezone\": null, \"event_collection\": \"start\", \"optional\": false, \"inverted\": false}], \"result\": [1]}",
       "headers": {
         "Server": "nginx",
-        "Date": "Sat, 28 May 2016 17:36:45 GMT",
+        "Date": "Sun, 29 May 2016 14:46:42 GMT",
         "Content-Type": "application/json",
         "Content-Length": "204",
         "Connection": "close",

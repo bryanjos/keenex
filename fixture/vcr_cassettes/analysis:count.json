@@ -12,10 +12,10 @@
       "url": "https://api.keen.io/3.0/projects/project_id/queries/count"
     },
     "response": {
-      "body": "{\"result\": 6}",
+      "body": "{\"result\": 8}",
       "headers": {
         "Server": "nginx",
-        "Date": "Sat, 28 May 2016 17:36:46 GMT",
+        "Date": "Sun, 29 May 2016 14:45:46 GMT",
         "Content-Type": "application/json",
         "Content-Length": "13",
         "Connection": "close",

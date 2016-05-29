@@ -34,9 +34,15 @@ defmodule Keenex.HTTP do
   defp get_key(key_type) do
     case key_type do
       :write ->
-        Keenex.write_key()
+        Agent.get(Keenex, fn(state) -> state.write_key end)
       :read ->
-        Keenex.read_key()
+        Agent.get(Keenex, fn(state) -> state.read_key end)
     end
   end
+
+  @spec project_id() :: binary
+  def project_id() do
+    Agent.get(Keenex, fn(state) -> state.project_id end)
+  end
+
 end

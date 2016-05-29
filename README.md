@@ -2,7 +2,7 @@ Keenex
 ======
 
 ```elixir
-{:keenex, "~> 0.2.0"}
+{:keenex, "~> 0.3.0"}
 ```
 
 [Documentation](http://hexdocs.pm/keenex)
@@ -25,7 +25,7 @@ alternatively, you can pass in the variables as well
 then pass in the keen pid when calling functions
 
 ```elixir
-{status, response} = Keenex.EventCollections.post("dinner.tacos", %{test: "tacos"})
+{status, response} = Keenex.API.add_event("dinner.tacos", %{test: "tacos"})
 ```
 
 status is either `:ok` or `:error`

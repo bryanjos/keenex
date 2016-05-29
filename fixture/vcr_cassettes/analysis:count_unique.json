@@ -1,7 +1,7 @@
 [
   {
     "request": {
-      "body": "{\"timeframe\":\"this_7_days\",\"target_property\":\"host\",\"event_collection\":\"start\"}",
+      "body": "{\"target_property\":\"host\",\"event_collection\":\"start\"}",
       "headers": {
         "Content-Type": "application/json",
         "Authorization": "read_key"
@@ -15,7 +15,7 @@
       "body": "{\"result\": 1}",
       "headers": {
         "Server": "nginx",
-        "Date": "Sat, 28 May 2016 17:36:44 GMT",
+        "Date": "Sun, 29 May 2016 14:46:01 GMT",
         "Content-Type": "application/json",
         "Content-Length": "13",
         "Connection": "close",

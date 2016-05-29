@@ -12,14 +12,14 @@ defmodule Keenex.Events.Test do
 
   test "post events" do
     use_cassette "events_post" do
-      {status, _response} = Keenex.Events.post(%{tacos: [%{test: true}]})
+      {status, _response} = Keenex.add_events(%{tacos: [%{test: true}]})
       assert status == :ok
     end
   end
 
   test "get event collection schemas" do
     use_cassette "event collection get schemas" do
-      {status, _} = Keenex.Events.get()
+      {status, _} = Keenex.inspect_all()
       assert status == :ok
     end
   end

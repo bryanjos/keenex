@@ -13,131 +13,79 @@ defmodule Keenex.Queries.Test do
   test "count" do
     use_cassette "analysis:count" do
       data = %{
-        event_collection: "start",
         timeframe: "this_7_days"
       }
-      {status, _} = Keenex.Queries.count(data)
+      {status, _} = Keenex.count("start", data)
       assert status == :ok
     end
   end
 
-  test "count: missing required fields" do
-    use_cassette "analysis:count_missing_required" do
-      data = %{
-      }
-      {status, _} = Keenex.Queries.count(data)
-      assert status == :error
+  test "count: only required" do
+    use_cassette "analysis:count_only_required" do
+      {status, _} = Keenex.count("start")
+      assert status == :ok
     end
   end
 
   test "count_unique" do
     use_cassette "analysis:count_unique" do
-      data = %{
-        event_collection: "start",
-        timeframe: "this_7_days",
-        target_property: "host"
-      }
-      {status, _} = Keenex.Queries.count_unique(data)
+      {status, _} = Keenex.count_unique("start", "host")
       assert status == :ok
     end
   end
 
   test "minimum" do
     use_cassette "analysis:minimum" do
-      data = %{
-        event_collection: "start",
-        timeframe: "this_7_days",
-        target_property: "host"
-      }
-      {status, _} = Keenex.Queries.minimum(data)
+      {status, _} = Keenex.minimum("start", "host")
       assert status == :ok
     end
   end
 
   test "maximum" do
     use_cassette "analysis:maximum" do
-      data = %{
-        event_collection: "start",
-        timeframe: "this_7_days",
-        target_property: "host"
-
-      }
-      {status, _} = Keenex.Queries.maximum(data)
+      {status, _} = Keenex.maximum("start", "host")
       assert status == :ok
     end
   end
 
   test "sum" do
     use_cassette "analysis:sum" do
-      data = %{
-        event_collection: "start",
-        timeframe: "this_7_days",
-        target_property: "host"
-
-      }
-      {status, _} = Keenex.Queries.sum(data)
+      {status, _} = Keenex.sum("start", "host")
       assert status == :ok
     end
   end
 
   test "average" do
     use_cassette "analysis:average" do
-      data = %{
-        event_collection: "start",
-        timeframe: "this_7_days",
-        target_property: "host"
-
-      }
-      {status, _} = Keenex.Queries.average(data)
+      {status, _} = Keenex.average("start", "host")
       assert status == :ok
     end
   end
 
   test "median" do
     use_cassette "analysis:median" do
-      data = %{
-        event_collection: "start",
-        timeframe: "this_7_days",
-        target_property: "host"
-
-      }
-      {status, _} = Keenex.Queries.median(data)
+      {status, _} = Keenex.median("start", "host")
       assert status == :ok
     end
   end
 
   test "percentile" do
     use_cassette "analysis:percentile" do
-      data = %{
-        event_collection: "start",
-        timeframe: "this_7_days",
-        target_property: "host",
-        percentile: 10
-
-      }
-      {status, _} = Keenex.Queries.percentile(data)
+      {status, _} = Keenex.percentile("start", "host", 10)
       assert status == :ok
     end
   end
 
   test "select_unique" do
     use_cassette "analysis:select_unique" do
-      data = %{
-        event_collection: "start",
-        timeframe: "this_7_days",
-        target_property: "host"
-
-      }
-      {status, _} = Keenex.Queries.select_unique(data)
+      {status, _} = Keenex.select_unique("start", "host")
       assert status == :ok
     end
   end
 
   test "multi_analysis" do
     use_cassette "analysis:multi_analysis" do
-      data = %{
-        event_collection: "start",
-        analyses: %{
+      analyses = %{
           sum: %{
             analysis_type: "sum",
             target_property: "host"
@@ -146,37 +94,29 @@ defmodule Keenex.Queries.Test do
             analysis_type: "median",
             target_property: "host"
           }
-        },
-        timeframe: "this_7_days"
-      }
-      {status, _} = Keenex.Queries.multi_analysis(data)
+        }
+      {status, _} = Keenex.multi_analysis("start", analyses)
       assert status == :ok
     end
   end
 
   test "funnel" do
     use_cassette "analysis:funnel" do
-      data = %{
-        steps: [
+        steps = [
           %{
             event_collection: "start",
             actor_property: "host",
             timeframe: "this_7_days"
           }
         ]
-      }
-      {status, _} = Keenex.Queries.funnel(data)
+      {status, _} = Keenex.funnel(steps)
       assert status == :ok
     end
   end
 
   test "extraction" do
     use_cassette "analysis:extraction" do
-      data = %{
-        event_collection: "start",
-        timeframe: "this_7_days"
-      }
-      {status, _} = Keenex.Queries.extraction(data)
+      {status, _} = Keenex.extraction("start")
       assert status == :ok
     end
   end

@@ -18,14 +18,14 @@ defmodule Keenex.EventCollections.Test do
         repo_user:     "azukiapp",
         repo_basename: "azk"
       }
-      {status, _} = Keenex.EventCollections.post("start", data)
+      {status, _} = Keenex.add_event("start", data)
       assert status == :ok
     end
   end
 
   test "get event collection schema" do
     use_cassette "event collection get schema" do
-      {status, _} = Keenex.EventCollections.get("start")
+      {status, _} = Keenex.inspect("start")
       assert status == :ok
     end
   end

@@ -1,15 +1,11 @@
 defmodule Keenex do
+  alias Keenex.HTTP
 
   @type status :: :ok | :error
   @type response :: {status, map}
 
-  defmodule Config do
-    @type t :: %Config{ project_id: binary, write_key: binary, read_key: binary }
-    defstruct [:project_id, :write_key, :read_key]
-  end
-
   @moduledoc """
-  This module defines the Keenex API. Use it as follows
+  This module defines the Keenex API
 
   looks for application variables in the `:keen` app named `:project_id`, `:write_key`, `:read_key`
   or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
@@ -26,13 +22,13 @@ defmodule Keenex do
   then pass in the keen pid when calling functions
 
   ```
-  {status, response} = Keenex.EventCollections.post(keen, "dinner.tacos", %{test: "tacos"})
+  {status, response} = Keenex.add_event("dinner.tacos", %{test: "tacos"})
   ```
   status is either :ok or :error
 
   response is a Map converted from the json response from Keen.
 
-  Info about the contents can be found [here](https://keen.io/docs/api/reference/)
+  Info about the contents can be found [here](https://keen.io/docs/api/)
   """
 
   @doc """
@@ -40,8 +36,8 @@ defmodule Keenex do
   """
   @spec start_link(binary, binary, binary) :: { Keenex.status, pid }
   def start_link(project_id, write_key, read_key) do
-    %Config{project_id: project_id, write_key: write_key, read_key: read_key}
-    |> start_link
+    config = %{project_id: project_id, write_key: write_key, read_key: read_key}
+    Agent.start_link(fn -> config end, name: __MODULE__)
   end
 
   @doc """
@@ -59,38 +55,135 @@ defmodule Keenex do
     start_link(project_id, write_key, read_key)
   end
 
+  @doc """
+  Returns schema for a single event collection
 
-  @spec start_link(Keenex.Config.t) :: { Keenex.status, pid }
-  def start_link(config) do
-    Agent.start_link(fn -> config end, name: __MODULE__)
+
+  ```
+  Keenex.API.inspect("dinner.tacos")
+  ```
+  """
+  @spec inspect(binary) :: Keenex.response
+  def inspect(event_collection) do
+    HTTP.get("/projects/#{HTTP.project_id}/events/#{event_collection}")
   end
 
   @doc """
-  Returns the project id
+  Returns schema for all event collections
+
+
+  ```
+  Keenex.API.inspect_all()
+  ```
   """
-  @spec project_id() :: binary
-  def project_id() do
-    config().project_id
+  @spec inspect_all() :: Keenex.response
+  def inspect_all() do
+    HTTP.get("/projects/#{HTTP.project_id}/events")
   end
+
 
   @doc """
-  Returns the write key
+  Publishes an event into the event collection
+
+
+  ```
+  Keenex.API.add_event("dinner.tacos", %{data: "data"})
+  ```
   """
-  @spec write_key() :: binary
-  def write_key() do
-    config().write_key
+  @spec add_event(binary, map) :: Keenex.response
+  def add_event(event_collection, data) do
+    HTTP.post("/projects/#{HTTP.project_id}/events/#{event_collection}", data)
   end
+
 
   @doc """
-  Returns the read key
+  Publishes multiple events to one or more event collections
+
+
+  ```
+  Keenex.API.add_events(%{event_collection1: [%{data: "data"}], event_collection2: [%{data: "data"}, %{more_data: "data"}]})
+  ```
   """
-  @spec read_key() :: binary
-  def read_key() do
-    config().read_key
+  @spec add_events(map) :: Keenex.response
+  def add_events(events) do
+    HTTP.post("/projects/#{HTTP.project_id}/events", events)
   end
 
-  defp config() do
-    Agent.get(__MODULE__, fn(state) -> state end)
+  @spec count(binary, map) :: Keenex.response
+  def count(event_collection, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection}, params)
+    query("count", params)
   end
+
+  @spec count_unique(binary, binary, map) :: Keenex.response
+  def count_unique(event_collection, target_property, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection, target_property: target_property}, params)
+    query("count_unique", params)
+  end
+
+  @spec minimum(binary, binary, map) :: Keenex.response
+  def minimum(event_collection, target_property, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection, target_property: target_property}, params)
+    query("minimum", params)
+  end
+
+  @spec maximum(binary, binary, map) :: Keenex.response
+  def maximum(event_collection, target_property, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection, target_property: target_property}, params)
+    query("maximum", params)
+  end
+
+  @spec sum(binary, binary, map) :: Keenex.response
+  def sum(event_collection, target_property, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection, target_property: target_property}, params)
+    query("sum", params)
+  end
+
+  @spec average(binary, binary, map) :: Keenex.response
+  def average(event_collection, target_property, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection, target_property: target_property}, params)
+    query("average", params)
+  end
+
+  @spec median(binary, binary, map) :: Keenex.response
+  def median(event_collection, target_property, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection, target_property: target_property}, params)
+    query("median", params)
+  end
+
+  @spec percentile(binary, binary, integer, map) :: Keenex.response
+  def percentile(event_collection, target_property, percentile, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection, target_property: target_property, percentile: percentile}, params)
+    query("percentile", params)
+  end
+
+  @spec select_unique(binary, binary, map) :: Keenex.response
+  def select_unique(event_collection, target_property, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection, target_property: target_property}, params)
+    query("select_unique", params)
+  end
+
+  @spec multi_analysis(binary, map, map) :: Keenex.response
+  def multi_analysis(event_collection, analyses, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection, analyses: analyses}, params)
+    query("multi_analysis", params)
+  end
+
+  @spec extraction(binary, map) :: Keenex.response
+  def extraction(event_collection, params \\ %{}) do
+    params = Map.merge(%{event_collection: event_collection}, params)
+    query("extraction", params)
+  end
+
+  @spec funnel(list) :: Keenex.response
+  def funnel(steps, params \\ %{}) do
+    params = Map.merge(%{steps: steps}, params)
+    query("funnel", params)
+  end
+
+  defp query(type, params) do
+    HTTP.post("/projects/#{HTTP.project_id}/queries/#{type}", params, :read)
+  end
+
 
 end
