@@ -2,7 +2,7 @@ Keenex
 ======
 
 ```elixir
-{:keenex, "~> 0.3.0"}
+{:keenex, "~> 0.3"}
 ```
 
 [Documentation](http://hexdocs.pm/keenex)
@@ -32,4 +32,4 @@ status is either `:ok` or `:error`
 
 response is a Map converted from the json response from Keen.
 
-For info about the content of the results, check out the [Keen API reference](https://keen.io/docs/api/reference/)
+For info about the content of the results, check out the [Keen API reference](https://keen.io/docs/api/)
