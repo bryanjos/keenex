@@ -3,7 +3,7 @@ defmodule Keenex.Mixfile do
 
   def project do
     [app: :keenex,
-     version: "0.3.0-dev",
+     version: "0.3.0",
      elixir: "~> 1.0",
      deps: deps,
      description: "Keen.io API Client",
