@@ -2,14 +2,14 @@ Keenex
 ======
 
 ```elixir
-{:keenex, "~> 0.3"}
+{:keenex, "~> 0.4"}
 ```
 
 [Documentation](http://hexdocs.pm/keenex)
 
 Usage:
 
-looks for application variables in the `:keen` app named `:project_id`, `:write_key`, `:read_key`
+looks for application variables in the `:keenex` app named `:project_id`, `:write_key`, `:read_key`
 or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
 
 Add it to your applications:
@@ -19,17 +19,6 @@ Add it to your applications:
     [applications: [:keenex]]
   end
 ```
-
-Or call start_link directly either using `start_link\0` or `start_link\3` to pass in variables
-
-```elixir
-{:ok, keen} = Keenex.start_link
-
-# OR
-
-{:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key")
-```
-
 
 then call functions
 

@@ -3,7 +3,7 @@ defmodule Keenex.Mixfile do
 
   def project do
     [app: :keenex,
-     version: "0.3.0",
+     version: "0.4.0",
      elixir: "~> 1.0",
      deps: deps,
      description: "Keen.io API Client",
@@ -17,7 +17,10 @@ defmodule Keenex.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [applications: [:httpoison, :logger, :poison]]
+    [
+      applications: [:httpoison, :logger, :poison],
+      mod: {Keenex, []}
+    ]
   end
 
   defp deps do

@@ -7,13 +7,13 @@ defmodule Keenex.HTTP do
 
 
   def get(endpoint) do
-    headers = [{"Authorization", get_key(:read)}]
+    headers = [{"Authorization", Keenex.get_key(:read)}]
     HTTPoison.get(@url <> endpoint, Keyword.merge(@headers, headers))
     |> handle_response
   end
 
   def post(endpoint, data, key_type \\ :write) do
-    headers = [{"Authorization", get_key(key_type)}]
+    headers = [{"Authorization", Keenex.get_key(key_type)}]
     HTTPoison.post(@url <> endpoint, Poison.encode!(data), Keyword.merge(@headers, headers))
     |> handle_response
   end
@@ -29,20 +29,6 @@ defmodule Keenex.HTTP do
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, %{ reason: reason } }
     end
-  end
-
-  defp get_key(key_type) do
-    case key_type do
-      :write ->
-        Agent.get(Keenex, fn(state) -> state.write_key end)
-      :read ->
-        Agent.get(Keenex, fn(state) -> state.read_key end)
-    end
-  end
-
-  @spec project_id() :: binary
-  def project_id() do
-    Agent.get(Keenex, fn(state) -> state.project_id end)
   end
 
 end

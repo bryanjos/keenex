@@ -7,7 +7,7 @@ defmodule Keenex do
   @moduledoc """
   This module defines the Keenex API
 
-  looks for application variables in the `:keen` app named `:project_id`, `:write_key`, `:read_key`
+  looks for application variables in the `:keenex` app named `:project_id`, `:write_key`, `:read_key`
   or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
 
   Add it to your applications:
@@ -16,16 +16,6 @@ defmodule Keenex do
       def application do
           [applications: [:keenex]]
       end
-
-  Or call start_link directly either using `start_link\0` or `start_link\3` to pass in variables
-
-
-      {:ok, keen} = Keenex.start_link
-
-      # OR
-
-      {:ok, keen} = Keenex.start_link("keen_project_id", "keen_write_key", "keen_read_key")
-
 
   and then call functions
 
@@ -39,29 +29,23 @@ defmodule Keenex do
   Info about the contents can be found [here](https://keen.io/docs/api/)
   """
 
-  @doc """
-  Starts Keenex app with the given project_id, write_key, and read_key
-  """
-  @spec start_link(binary, binary, binary) :: { Keenex.status, pid }
-  def start_link(project_id, write_key, read_key) do
-    config = %{project_id: project_id, write_key: write_key, read_key: read_key}
-    Agent.start_link(fn -> config end, name: __MODULE__)
-  end
+  use Application
 
   @doc """
   Starts Keenex app.
 
-  Looks for application variables in the `:keen` app named `:project_id`, `:write_key`, `:read_key`
+  Looks for application variables in the `:keenex` app named `:project_id`, `:write_key`, `:read_key`
   or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
   """
-  @spec start_link() :: { Keenex.status, pid }
-  def start_link() do
-    project_id = Application.get_env(:keen, :project_id, System.get_env("KEEN_PROJECT_ID"))
-    write_key  = Application.get_env(:keen, :write_key , System.get_env("KEEN_WRITE_KEY" ))
-    read_key   = Application.get_env(:keen, :read_key  , System.get_env("KEEN_READ_KEY"  ))
+  def start(_type, _args) do
+    project_id = Application.get_env(:keenex, :project_id, System.get_env("KEEN_PROJECT_ID"))
+    write_key  = Application.get_env(:keenex, :write_key , System.get_env("KEEN_WRITE_KEY" ))
+    read_key   = Application.get_env(:keenex, :read_key  , System.get_env("KEEN_READ_KEY"  ))
 
-    start_link(project_id, write_key, read_key)
+    config = %{project_id: project_id, write_key: write_key, read_key: read_key}
+    Agent.start_link(fn -> config end, name: __MODULE__)
   end
+
 
   @doc """
   Returns schema for a single event collection
@@ -73,7 +57,7 @@ defmodule Keenex do
   """
   @spec inspect(binary) :: Keenex.response
   def inspect(event_collection) do
-    HTTP.get("/projects/#{HTTP.project_id}/events/#{event_collection}")
+    HTTP.get("/projects/#{project_id}/events/#{event_collection}")
   end
 
   @doc """
@@ -86,7 +70,7 @@ defmodule Keenex do
   """
   @spec inspect_all() :: Keenex.response
   def inspect_all() do
-    HTTP.get("/projects/#{HTTP.project_id}/events")
+    HTTP.get("/projects/#{project_id}/events")
   end
 
 
@@ -100,7 +84,7 @@ defmodule Keenex do
   """
   @spec add_event(binary, map) :: Keenex.response
   def add_event(event_collection, data) do
-    HTTP.post("/projects/#{HTTP.project_id}/events/#{event_collection}", data)
+    HTTP.post("/projects/#{project_id}/events/#{event_collection}", data)
   end
 
 
@@ -114,7 +98,7 @@ defmodule Keenex do
   """
   @spec add_events(map) :: Keenex.response
   def add_events(events) do
-    HTTP.post("/projects/#{HTTP.project_id}/events", events)
+    HTTP.post("/projects/#{project_id}/events", events)
   end
 
   @doc """
@@ -226,8 +210,22 @@ defmodule Keenex do
   end
 
   defp query(type, params) do
-    HTTP.post("/projects/#{HTTP.project_id}/queries/#{type}", params, :read)
+    HTTP.post("/projects/#{project_id}/queries/#{type}", params, :read)
   end
 
+  @doc false
+  def get_key(key_type) do
+    case key_type do
+      :write ->
+        Agent.get(__MODULE__, fn(state) -> state.write_key end)
+      :read ->
+        Agent.get(__MODULE__, fn(state) -> state.read_key end)
+    end
+  end
+
+  @doc false
+  def project_id() do
+    Agent.get(__MODULE__, fn(state) -> state.project_id end)
+  end
 
 end

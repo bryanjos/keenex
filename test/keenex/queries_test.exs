@@ -6,8 +6,7 @@ defmodule Keenex.Queries.Test do
 
   setup_all do
     Helpers.exvcr_setup
-    {:ok, keen } = Helpers.new_keenex
-    {:ok, [keen: keen] }
+    {:ok, [] }
   end
 
   test "count" do

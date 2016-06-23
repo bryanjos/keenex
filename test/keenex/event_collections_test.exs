@@ -6,8 +6,7 @@ defmodule Keenex.EventCollections.Test do
 
   setup_all do
     Helpers.exvcr_setup
-    {:ok, keen } = Helpers.new_keenex
-    {:ok, [keen: keen] }
+    {:ok, [] }
   end
 
   test "post new start event" do
