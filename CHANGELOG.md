@@ -1,3 +1,7 @@
+## [1.0.0]
+### Changed
+- Update to 1.0
+
 ## [0.4.0]
 ### Changed
 - Now looks for `:keenex` config block
