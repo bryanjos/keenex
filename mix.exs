@@ -37,7 +37,7 @@ defmodule Keenex.Mixfile do
 
   defp package do
     [ # These are the default files included in the package
-      files: ["lib", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
+      files: ["lib", "mix.exs", "README.md"],
       maintainers: ["Bryan Joseph"],
       licenses: ["MIT"],
       links: %{ "GitHub" => "https://github.com/bryanjos/keenex" }
