@@ -57,7 +57,7 @@ defmodule Keenex do
   """
   @spec inspect(binary) :: Keenex.response
   def inspect(event_collection) do
-    HTTP.get("/projects/#{project_id}/events/#{event_collection}")
+    HTTP.get("/projects/#{project_id()}/events/#{event_collection}")
   end
 
   @doc """
@@ -70,7 +70,7 @@ defmodule Keenex do
   """
   @spec inspect_all() :: Keenex.response
   def inspect_all() do
-    HTTP.get("/projects/#{project_id}/events")
+    HTTP.get("/projects/#{project_id()}/events")
   end
 
 
@@ -84,7 +84,7 @@ defmodule Keenex do
   """
   @spec add_event(binary, map) :: Keenex.response
   def add_event(event_collection, data) do
-    HTTP.post("/projects/#{project_id}/events/#{event_collection}", data)
+    HTTP.post("/projects/#{project_id()}/events/#{event_collection}", data)
   end
 
 
@@ -98,7 +98,7 @@ defmodule Keenex do
   """
   @spec add_events(map) :: Keenex.response
   def add_events(events) do
-    HTTP.post("/projects/#{project_id}/events", events)
+    HTTP.post("/projects/#{project_id()}/events", events)
   end
 
   @doc """
@@ -210,7 +210,7 @@ defmodule Keenex do
   end
 
   defp query(type, params) do
-    HTTP.post("/projects/#{project_id}/queries/#{type}", params, :read)
+    HTTP.post("/projects/#{project_id()}/queries/#{type}", params, :read)
   end
 
   @doc false

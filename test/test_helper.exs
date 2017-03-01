@@ -2,15 +2,15 @@ defmodule Keenex.Helpers do
 
   def exvcr_setup do
     ExVCR.Config.cassette_library_dir("fixture/vcr_cassettes")
-    ExVCR.Config.filter_sensitive_data(write_key , "write_key" )
-    ExVCR.Config.filter_sensitive_data(read_key  , "read_key"  )
-    ExVCR.Config.filter_sensitive_data(project_id, "project_id")
+    ExVCR.Config.filter_sensitive_data(write_key(), "write_key")
+    ExVCR.Config.filter_sensitive_data(read_key(), "read_key")
+    ExVCR.Config.filter_sensitive_data(project_id(), "project_id")
 
     HTTPoison.start
   end
 
   def new_keenex do
-    Keenex.start_link(project_id, write_key, read_key)
+    Keenex.start_link(project_id(), write_key(), read_key())
   end
 
   def project_id do
