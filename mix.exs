@@ -26,7 +26,7 @@ defmodule Keenex.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.8"},
-      {:poison, "~> 1.0 or ~> 2.0"},
+      {:poison, "~> 1.0 or ~> 2.0 or ~> 3.0"},
       {:earmark, "~> 0.2", only: :dev},
       {:ex_doc, "~> 0.11", only: :dev},
       {:exvcr, "~> 0.7", only: [:dev, :test]},
