@@ -5,9 +5,9 @@ defmodule Keenex.Mixfile do
     [app: :keenex,
      version: "1.0.0",
      elixir: "~> 1.0",
-     deps: deps,
+     deps: deps(),
      description: "Keen.io API Client",
-     package: package,
+     package: package(),
      test_coverage: [tool: ExCoveralls],
      preferred_cli_env: [coveralls: :test],
      source_url: "https://github.com/bryanjos/keenex" ]
