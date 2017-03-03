@@ -2,7 +2,7 @@ Keenex
 ======
 
 ```elixir
-{:keenex, "~> 0.4"}
+{:keenex, "~> 1.0"}
 ```
 
 [Documentation](http://hexdocs.pm/keenex)

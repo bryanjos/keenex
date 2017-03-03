@@ -1,3 +1,7 @@
+## [1.0.1]
+### Changed
+- Updates for Elixir 1.4 compatibility
+
 ## [1.0.0]
 ### Changed
 - Update to 1.0
