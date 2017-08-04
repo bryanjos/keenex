@@ -22,9 +22,9 @@ defmodule Keenex do
   Configure it in `config.exs`:
 
       config :keenex,
-        project_id: "xxxxx",
-        read_key:   "xxxxx",
-        write_key:  "xxxxx",
+        project_id: "xxxxx",  # defaults to System.get_env("KEEN_PROJECT_ID")
+        read_key:   "xxxxx",  # defaults to System.get_env("KEEN_READ_KEY")
+        write_key:  "xxxxx",  # defaults to System.get_env("KEEN_WRITE_KEY")
         httpoison_opts: [timeout: 5000]  # defaults to []
 
   And then call functions like:
