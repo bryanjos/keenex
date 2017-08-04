@@ -5,44 +5,56 @@ defmodule Keenex do
   @type response :: {status, map}
 
   @moduledoc """
-  This module defines the Keenex API
+  Keenex provides an Elixir interface to the Keen.io HTTP API.
 
-  looks for application variables in the `:keenex` app named `:project_id`, `:write_key`, `:read_key`
-  or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
+  ## Usage
 
-  Add it to your applications:
-
+  Add it to your applications and dependencies in `mix.exs`:
 
       def application do
-          [applications: [:keenex]]
+        [applications: [:keenex]]
       end
 
-  and then call functions
+      def deps do
+        [{:keenex, "~> 1.0"}]
+      end
+
+  Configure it in `config.exs`:
+
+      config :keenex,
+        project_id: "xxxxx",
+        read_key:   "xxxxx",
+        write_key:  "xxxxx",
+        httpoison_opts: [timeout: 5000]  # defaults to []
+
+  And then call functions like:
 
       {status, response} = Keenex.add_event("dinner.tacos", %{test: "tacos"})
 
+  `status` is either `:ok` or `:error`.
 
-  status is either `:ok` or `:error`
-
-  response is a Map converted from the json response from Keen.
-
-  Info about the contents can be found [here](https://keen.io/docs/api/)
+  `response` is a Map converted from the JSON response from Keen.
+  Information about the contents of the response can be found
+  [here](https://keen.io/docs/api/).
   """
 
   use Application
 
   @doc """
   Starts Keenex app.
-
-  Looks for application variables in the `:keenex` app named `:project_id`, `:write_key`, `:read_key`
-  or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
   """
   def start(_type, _args) do
     project_id = Application.get_env(:keenex, :project_id, System.get_env("KEEN_PROJECT_ID"))
     write_key  = Application.get_env(:keenex, :write_key , System.get_env("KEEN_WRITE_KEY" ))
     read_key   = Application.get_env(:keenex, :read_key  , System.get_env("KEEN_READ_KEY"  ))
+    httpoison_opts = Application.get_env(:keenex, :httpoison_opts, [])
 
-    config = %{project_id: project_id, write_key: write_key, read_key: read_key}
+    config = %{
+      project_id: project_id,
+      write_key: write_key,
+      read_key: read_key,
+      httpoison_opts: httpoison_opts,
+    }
     Agent.start_link(fn -> config end, name: __MODULE__)
   end
 
@@ -228,4 +240,8 @@ defmodule Keenex do
     Agent.get(__MODULE__, fn(state) -> state.project_id end)
   end
 
+  @doc false
+  def httpoison_opts() do
+    Agent.get(__MODULE__, fn(state) -> state.httpoison_opts end)
+  end
 end
