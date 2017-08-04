@@ -1,33 +1,36 @@
-Keenex
-======
-
-```elixir
-{:keenex, "~> 1.0"}
-```
+# Keenex
 
 [Documentation](http://hexdocs.pm/keenex)
 
-Usage:
+Keenex provides an Elixir interface to the Keen.io HTTP API.
 
-looks for application variables in the `:keenex` app named `:project_id`, `:write_key`, `:read_key`
-or if any of those aren't available, it looks for environment variables named `KEEN_PROJECT_ID`, `KEEN_WRITE_KEY`, `KEEN_READ_KEY`
+## Usage
 
-Add it to your applications:
+Add it to your applications and dependencies in `mix.exs`:
 
-```elixir
-  def application do
-    [applications: [:keenex]]
-  end
-```
+    def application do
+      [applications: [:keenex]]
+    end
 
-then call functions
+    def deps do
+      [{:keenex, "~> 1.0"}]
+    end
 
-```elixir
-{status, response} = Keenex.add_event("dinner.tacos", %{test: "tacos"})
-```
+Configure it in `config.exs`:
 
-status is either `:ok` or `:error`
+    config :keenex,
+      project_id: "xxxxx",  # defaults to System.get_env("KEEN_PROJECT_ID")
+      read_key:   "xxxxx",  # defaults to System.get_env("KEEN_READ_KEY")
+      write_key:  "xxxxx",  # defaults to System.get_env("KEEN_WRITE_KEY")
+      httpoison_opts: [timeout: 5000]  # defaults to []
 
-response is a Map converted from the json response from Keen.
+And then call functions like:
 
-For info about the content of the results, check out the [Keen API reference](https://keen.io/docs/api/)
+    {status, response} = Keenex.add_event("dinner.tacos", %{test: "tacos"})
+
+`status` is either `:ok` or `:error`.
+
+`response` is a Map converted from the JSON response from Keen.
+Information about the contents of the response can be found
+[here](https://keen.io/docs/api/).
+
