@@ -1,32 +1,33 @@
 defmodule Keenex.EventCollections.Test do
-  use ExUnit.Case, async: false
-  use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
+  use Keenex.HttpCase, async: true
+  alias Plug.Conn
 
-  alias Keenex.Helpers
+  test "post new start event", %{bypass: bypass} do
+    Bypass.expect_once(bypass, "POST", "/projects/project_id/events/start", fn conn ->
+      Conn.resp(conn, 200, "{\"tacos\": [{\"success\": true}]}")
+    end)
 
-  setup_all do
-    Helpers.exvcr_setup()
-    {:ok, []}
+    data = %{
+      url: "https://github.com/azukiapp/azk",
+      host: "github.com",
+      repo_user: "azukiapp",
+      repo_basename: "azk"
+    }
+
+    {status, _} = Keenex.add_event("start", data)
+    assert status == :ok
   end
 
-  test "post new start event" do
-    use_cassette "event collection multiple data" do
-      data = %{
-        url: "https://github.com/azukiapp/azk",
-        host: "github.com",
-        repo_user: "azukiapp",
-        repo_basename: "azk"
-      }
+  test "get event collection schema", %{bypass: bypass} do
+    Bypass.expect_once(bypass, "GET", "/projects/project_id/events/start", fn conn ->
+      Conn.resp(
+        conn,
+        200,
+        "{\"properties\": {\"keen.created_at\": \"datetime\", \"repo_basename\": \"string\", \"repo_user\": \"string\", \"keen.id\": \"string\", \"url\": \"string\", \"host\": \"string\", \"keen.timestamp\": \"datetime\"}}"
+      )
+    end)
 
-      {status, _} = Keenex.add_event("start", data)
-      assert status == :ok
-    end
-  end
-
-  test "get event collection schema" do
-    use_cassette "event collection get schema" do
-      {status, _} = Keenex.inspect("start")
-      assert status == :ok
-    end
+    {status, _} = Keenex.inspect("start")
+    assert status == :ok
   end
 end

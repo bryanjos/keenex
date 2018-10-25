@@ -44,19 +44,7 @@ defmodule Keenex do
   Starts Keenex app.
   """
   def start(_type, _args) do
-    project_id = Application.get_env(:keenex, :project_id, System.get_env("KEEN_PROJECT_ID"))
-    write_key = Application.get_env(:keenex, :write_key, System.get_env("KEEN_WRITE_KEY"))
-    read_key = Application.get_env(:keenex, :read_key, System.get_env("KEEN_READ_KEY"))
-    httpoison_opts = Application.get_env(:keenex, :httpoison_opts, [])
-
-    config = %{
-      project_id: project_id,
-      write_key: write_key,
-      read_key: read_key,
-      httpoison_opts: httpoison_opts
-    }
-
-    Agent.start_link(fn -> config end, name: __MODULE__)
+    Agent.start_link(fn -> [] end, name: __MODULE__)
   end
 
   @doc """
@@ -250,20 +238,37 @@ defmodule Keenex do
   def get_key(key_type) do
     case key_type do
       :write ->
-        Agent.get(__MODULE__, fn state -> state.write_key end)
+        write_key()
 
       :read ->
-        Agent.get(__MODULE__, fn state -> state.read_key end)
+        read_key()
     end
   end
 
   @doc false
-  def project_id() do
-    Agent.get(__MODULE__, fn state -> state.project_id end)
+  def project_id do
+    config()[:project_id]
+  end
+
+  def read_key do
+    config()[:read_key]
+  end
+
+  def write_key do
+    config()[:write_key]
   end
 
   @doc false
-  def httpoison_opts() do
-    Agent.get(__MODULE__, fn state -> state.httpoison_opts end)
+  def httpoison_opts do
+    config()[:httpoison_opts]
+  end
+
+  defp config do
+    [
+      project_id: Application.get_env(:keenex, :project_id, System.get_env("KEEN_PROJECT_ID")),
+      write_key: Application.get_env(:keenex, :write_key, System.get_env("KEEN_WRITE_KEY")),
+      read_key: Application.get_env(:keenex, :read_key, System.get_env("KEEN_READ_KEY")),
+      httpoison_opts: Application.get_env(:keenex, :httpoison_opts, [])
+    ]
   end
 end

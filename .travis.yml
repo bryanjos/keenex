@@ -1,0 +1,14 @@
+language: elixir
+dist: trusty
+elixir:
+  - 1.7
+otp_release:
+  - 21.1
+script:
+  - MIX_ENV=test mix test
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: mix hex.publish --yes
+  on:
+    tags: true

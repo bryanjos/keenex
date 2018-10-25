@@ -4,8 +4,9 @@ defmodule Keenex.Mixfile do
   def project do
     [
       app: :keenex,
-      version: "1.0.1",
+      version: "1.1.0",
       elixir: "~> 1.0",
+      elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       description: "Keen.io API Client",
       package: package(),
@@ -15,12 +16,15 @@ defmodule Keenex.Mixfile do
     ]
   end
 
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
   # Configuration for the OTP application
   #
   # Type `mix help compile.app` for more information
   def application do
     [
-      applications: [:httpoison, :logger, :poison],
+      extra_applications: [:logger],
       mod: {Keenex, []}
     ]
   end
@@ -28,11 +32,13 @@ defmodule Keenex.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 1.0"},
-      {:poison, "~> 4.0"},
+      {:jason, "~> 1.0"},
       {:ex_doc, "~> 0.19", only: :dev},
       {:exvcr, "~> 0.10", only: [:dev, :test]},
       {:excoveralls, "~> 0.4", only: [:dev, :test]},
-      {:credo, "~> 0.10", only: [:dev, :test]}
+      {:credo, "~> 0.10", only: [:dev, :test]},
+      {:bypass, "~> 0.9.0", only: [:test]},
+      {:plug_cowboy, "~> 1.0", only: [:test]}
     ]
   end
 
