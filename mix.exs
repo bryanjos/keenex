@@ -2,15 +2,17 @@ defmodule Keenex.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :keenex,
-     version: "1.0.1",
-     elixir: "~> 1.0",
-     deps: deps(),
-     description: "Keen.io API Client",
-     package: package(),
-     test_coverage: [tool: ExCoveralls],
-     preferred_cli_env: [coveralls: :test],
-     source_url: "https://github.com/bryanjos/keenex" ]
+    [
+      app: :keenex,
+      version: "1.0.1",
+      elixir: "~> 1.0",
+      deps: deps(),
+      description: "Keen.io API Client",
+      package: package(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [coveralls: :test],
+      source_url: "https://github.com/bryanjos/keenex"
+    ]
   end
 
   # Configuration for the OTP application
@@ -25,22 +27,22 @@ defmodule Keenex.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 0.8"},
-      {:poison, "~> 1.0 or ~> 2.0 or ~> 3.0"},
-      {:earmark, "~> 0.2", only: :dev},
-      {:ex_doc, "~> 0.11", only: :dev},
-      {:exvcr, "~> 0.7", only: [:dev, :test]},
+      {:httpoison, "~> 1.0"},
+      {:poison, "~> 4.0"},
+      {:ex_doc, "~> 0.19", only: :dev},
+      {:exvcr, "~> 0.10", only: [:dev, :test]},
       {:excoveralls, "~> 0.4", only: [:dev, :test]},
-      {:credo, "~> 0.2.0", only: [:dev, :test]}
+      {:credo, "~> 0.10", only: [:dev, :test]}
     ]
   end
 
   defp package do
-    [ # These are the default files included in the package
+    # These are the default files included in the package
+    [
       files: ["lib", "mix.exs", "README.md"],
       maintainers: ["Bryan Joseph"],
       licenses: ["MIT"],
-      links: %{ "GitHub" => "https://github.com/bryanjos/keenex" }
+      links: %{"GitHub" => "https://github.com/bryanjos/keenex"}
     ]
   end
 end

@@ -5,18 +5,19 @@ defmodule Keenex.EventCollections.Test do
   alias Keenex.Helpers
 
   setup_all do
-    Helpers.exvcr_setup
-    {:ok, [] }
+    Helpers.exvcr_setup()
+    {:ok, []}
   end
 
   test "post new start event" do
     use_cassette "event collection multiple data" do
       data = %{
-        url:           "https://github.com/azukiapp/azk",
-        host:          "github.com",
-        repo_user:     "azukiapp",
+        url: "https://github.com/azukiapp/azk",
+        host: "github.com",
+        repo_user: "azukiapp",
         repo_basename: "azk"
       }
+
       {status, _} = Keenex.add_event("start", data)
       assert status == :ok
     end
@@ -28,5 +29,4 @@ defmodule Keenex.EventCollections.Test do
       assert status == :ok
     end
   end
-
 end

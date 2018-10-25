@@ -5,8 +5,8 @@ defmodule Keenex.Events.Test do
   alias Keenex.Helpers
 
   setup_all do
-    Helpers.exvcr_setup
-    {:ok, [] }
+    Helpers.exvcr_setup()
+    {:ok, []}
   end
 
   test "post events" do

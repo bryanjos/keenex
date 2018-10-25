@@ -5,8 +5,8 @@ defmodule Keenex.Queries.Test do
   alias Keenex.Helpers
 
   setup_all do
-    Helpers.exvcr_setup
-    {:ok, [] }
+    Helpers.exvcr_setup()
+    {:ok, []}
   end
 
   test "count" do
@@ -14,6 +14,7 @@ defmodule Keenex.Queries.Test do
       data = %{
         timeframe: "this_7_days"
       }
+
       {status, _} = Keenex.count("start", data)
       assert status == :ok
     end
@@ -85,15 +86,16 @@ defmodule Keenex.Queries.Test do
   test "multi_analysis" do
     use_cassette "analysis:multi_analysis" do
       analyses = %{
-          sum: %{
-            analysis_type: "sum",
-            target_property: "host"
-          },
-          median: %{
-            analysis_type: "median",
-            target_property: "host"
-          }
+        sum: %{
+          analysis_type: "sum",
+          target_property: "host"
+        },
+        median: %{
+          analysis_type: "median",
+          target_property: "host"
         }
+      }
+
       {status, _} = Keenex.multi_analysis("start", analyses)
       assert status == :ok
     end
@@ -101,13 +103,14 @@ defmodule Keenex.Queries.Test do
 
   test "funnel" do
     use_cassette "analysis:funnel" do
-        steps = [
-          %{
-            event_collection: "start",
-            actor_property: "host",
-            timeframe: "this_7_days"
-          }
-        ]
+      steps = [
+        %{
+          event_collection: "start",
+          actor_property: "host",
+          timeframe: "this_7_days"
+        }
+      ]
+
       {status, _} = Keenex.funnel(steps)
       assert status == :ok
     end
@@ -119,6 +122,4 @@ defmodule Keenex.Queries.Test do
       assert status == :ok
     end
   end
-
-
 end
