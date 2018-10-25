@@ -34,7 +34,6 @@ defmodule Keenex.Mixfile do
       {:httpoison, "~> 1.0"},
       {:jason, "~> 1.0"},
       {:ex_doc, "~> 0.19", only: :dev},
-      {:exvcr, "~> 0.10", only: [:dev, :test]},
       {:excoveralls, "~> 0.4", only: [:dev, :test]},
       {:credo, "~> 0.10", only: [:dev, :test]},
       {:bypass, "~> 0.9.0", only: [:test]},
