@@ -8,12 +8,8 @@ Keenex provides an Elixir interface to the Keen.io HTTP API.
 
 Add it to your applications and dependencies in `mix.exs`:
 
-    def application do
-      [applications: [:keenex]]
-    end
-
     def deps do
-      [{:keenex, "~> 1.0"}]
+      [{:keenex, "~> 1.1"}]
     end
 
 Configure it in `config.exs`:
